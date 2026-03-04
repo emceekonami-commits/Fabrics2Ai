@@ -1,6 +1,6 @@
 import { useState, useRef, ChangeEvent } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Upload, Sparkles, Download, RefreshCw, ChevronLeft, Send, Loader2 } from "lucide-react";
+import { Upload, Sparkles, Download, RefreshCw, ChevronLeft, Send, Loader as Loader2 } from "lucide-react";
 import { 
   generateFashionDesign, 
   getRandomParams, 
