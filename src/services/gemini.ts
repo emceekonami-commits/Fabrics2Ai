@@ -1,6 +1,16 @@
 import { GoogleGenAI } from "@google/genai";
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "" });
+// Lazy initialization to prevent top-level crashes if process.env is missing
+let aiInstance: any = null;
+
+function getAI() {
+  if (!aiInstance) {
+    // Fallback for different environments
+    const apiKey = process.env.GEMINI_API_KEY || "";
+    aiInstance = new GoogleGenAI({ apiKey });
+  }
+  return aiInstance;
+}
 
 export interface GenerationParams {
   outfitType: string;
@@ -22,6 +32,7 @@ export const getRandomParams = (): GenerationParams => ({
 });
 
 export async function generateFashionDesign(fabricBase64: string, params: GenerationParams) {
+  const ai = getAI();
   const model = "gemini-2.5-flash-image";
   
   const prompt = `Generate a high-quality, photorealistic fashion photograph of a ${params.gender} model in a ${params.pose} wearing a ${params.outfitType} made from the fabric pattern in the provided image. 
@@ -56,6 +67,7 @@ export async function generateFashionDesign(fabricBase64: string, params: Genera
 }
 
 export async function editFashionDesign(imageBase64: string, editPrompt: string) {
+  const ai = getAI();
   const model = "gemini-2.5-flash-image";
   
   const response = await ai.models.generateContent({
