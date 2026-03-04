@@ -1,6 +1,6 @@
 import { useState, useRef, ChangeEvent } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Upload, Sparkles, Download, RefreshCw, ChevronLeft, Send, Loader as Loader2 } from "lucide-react";
+import { Upload, Sparkles, Download, RefreshCw, ChevronLeft, Send, Loader2 } from "lucide-react";
 import { 
   generateFashionDesign, 
   getRandomParams, 
@@ -42,13 +42,12 @@ export default function App() {
     setPage("results");
     
     try {
+      // Generate 2 images as requested
       const promises = [
-        generateFashionDesign(fabricImage, getRandomParams()),
-        generateFashionDesign(fabricImage, getRandomParams()),
         generateFashionDesign(fabricImage, getRandomParams()),
         generateFashionDesign(fabricImage, getRandomParams())
       ];
-
+      
       const results = await Promise.all(promises);
       setGeneratedImages(results.map((url, i) => ({ id: `${Date.now()}-${i}`, url })));
     } catch (err) {
@@ -235,7 +234,7 @@ export default function App() {
             <div className="space-y-12">
               {isGenerating && generatedImages.length === 0 && (
                 <div className="space-y-8">
-                  {[1, 2, 3, 4].map(i => (
+                  {[1, 2].map(i => (
                     <div key={i} className="aspect-[3/4] rounded-3xl bg-stone-100 animate-pulse flex items-center justify-center">
                       <Loader2 className="animate-spin text-stone-300" size={32} />
                     </div>
